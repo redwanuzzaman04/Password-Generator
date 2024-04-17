@@ -1,0 +1,130 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator | javascript project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="number"], input[type="checkbox"] {
+            margin: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #password {
+            margin-top: 20px;
+            font-size: 18px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Password Generator | javascript project</h1>
+        <form onsubmit="generatePassword(); return false;">
+            <label for="length">Password Length:</label>
+            <input type="number" id="length" value="8" min="1">
+            <br>
+            <label><input type="checkbox" id="includeUppercase" checked>Include Uppercase Letters</label>
+            <br>
+            <label><input type="checkbox" id="includeLowercase" checked>Include Lowercase Letters</label>
+            <br>
+            <label><input type="checkbox" id="includeNumbers" checked>Include Numbers</label>
+            <br>
+            <label><input type="checkbox" id="includeSymbols">Include Symbols</label>
+            <br>
+            <button type="submit">Generate Password</button>
+        </form>
+        <div id="password" onclick="copyPassword()"></div>
+    </div>
+
+    <script>
+        function generatePassword() {
+            const length = parseInt(document.getElementById('length').value);
+            const includeUppercase = document.getElementById('includeUppercase').checked;
+            const includeLowercase = document.getElementById('includeLowercase').checked;
+            const includeNumbers = document.getElementById('includeNumbers').checked;
+            const includeSymbols = document.getElementById('includeSymbols').checked;
+
+            const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+            const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const numberChars = '0123456789';
+            const symbolChars = '!@#$%^&*()-_+=~';
+
+            let chars = '';
+            if (includeLowercase) chars += lowercaseChars;
+            if (includeUppercase) chars += uppercaseChars;
+            if (includeNumbers) chars += numberChars;
+            if (includeSymbols) chars += symbolChars;
+
+            if (chars === '') {
+                document.getElementById('password').textContent = 'At least one character type must be selected.';
+                return;
+            }
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * chars.length);
+                password += chars[randomIndex];
+            }
+
+            document.getElementById('password').textContent = password;
+        }
+
+        function copyPassword() {
+            const passwordElement = document.getElementById('password');
+            const range = document.createRange();
+            range.selectNode(passwordElement);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            alert('Password copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
